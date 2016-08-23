@@ -84,6 +84,13 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 }
  
 void terminal_putchar(char c) {
+	if (c=='\n'){
+		terminal_column=0;
+		if (++terminal_row == VGA_HEIGHT) {
+                        terminal_row = 0;
+                }
+		return;
+	}
 	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 	if (++terminal_column == VGA_WIDTH) {
 		terminal_column = 0;
@@ -141,7 +148,9 @@ return getScancode();
 void terminal_wait() {
 	char lowercase[]="##1234567890-*##qwertyuiop[]##asdfghjkl;'###zxcvbnm,./";
 //	terminal_writestring("test\n");
-	char c = lowercase[getchar()];
+	uint8_t n = getchar();
+	char c = lowercase[n];
+	terminal_color = make_color((n%15)+1, COLOR_BLACK);
 	terminal_putchar(c);
 	
 	uint32_t hax = 1, cracks = 1, fix = 1, vitalya = 1, ebu_dal = 1;
