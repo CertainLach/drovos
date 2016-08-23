@@ -15,7 +15,8 @@
 #if !defined(__i386__)
 #error "This tutorial needs to be compiled with a ix86-elf compiler"
 #endif
- 
+
+//char* buffer = ""; 
 /* Hardware text mode color constants. */
 enum vga_color {
 	COLOR_BLACK = 0,
@@ -99,13 +100,37 @@ void terminal_putchar(char c) {
 		}
 	}
 }
- 
+
 void terminal_writestring(const char* data) {
 	size_t datalen = strlen(data);
 	for (size_t i = 0; i < datalen; i++)
 		terminal_putchar(data[i]);
 }
- 
+
+void system_parsecommand(char data[]) {
+	if (data[0]=='r'&&data[1]=='e'&&data[2]=='t'&&data[3]=='u'&&
+		data[4]=='r'&&data[5]=='n'&&data[6]=='^') {
+		terminal_putchar('\n');
+		return;
+	}
+	if (data[0]=='c'&&data[1]=='l'&&data[2]=='e'&&data[3]=='a'&&
+		data[4]=='r'&&data[5]=='^') {
+		terminal_initialize();
+		return;
+	}
+
+
+	if (data[0]=='m'&&data[1]=='a'&&data[2]=='g'&&data[3]=='i'&&data[4]=='c'){
+		terminal_writestring("It's a magic!\n\nYeah!\n");
+		return;
+	}
+
+	terminal_writestring("unknown command ");
+	terminal_writestring(data);
+	terminal_writestring(" \n");
+
+}
+
 #if defined(__cplusplus)
 extern "C" /* Use C linkage for kernel_main. */
 #endif
@@ -144,15 +169,25 @@ uint8_t getchar()
 {
 return getScancode();
 }
-
+char buffer[128]="";
+uint8_t point = 0;
 void terminal_wait() {
-	char lowercase[]="##1234567890-*##qwertyuiop[]##asdfghjkl;'###zxcvbnm,./";
+	char lowercase[]="##1234567890-*##qwertyuiop[]\n#asdfghjkl;'###zxcvbnm,./";
 //	terminal_writestring("test\n");
 	uint8_t n = getchar();
 	char c = lowercase[n];
-	terminal_color = make_color((n%15)+1, COLOR_BLACK);
 	terminal_putchar(c);
-	
+	if (c=='\n'){
+		system_parsecommand(buffer);
+		uint8_t tmp;
+		for (tmp = 0; tmp < 127; tmp++)
+			buffer[tmp] = '^';
+		point = 0;
+	} else {
+		buffer[point++] = c;
+	}
+
+	//terminal_color = make_color((n%15)+1, COLOR_BLACK);
 	uint32_t hax = 1, cracks = 1, fix = 1, vitalya = 1, ebu_dal = 1;
  	
 	for (; ebu_dal<60000; ebu_dal++)
