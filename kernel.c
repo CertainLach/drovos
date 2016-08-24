@@ -1,10 +1,5 @@
-/* Surely you will remove the processor conditionals and this comment
-   appropriately depending on whether or not you use C++. */
-#if !defined(__cplusplus)
-#include <stdbool.h> /* C doesn't have booleans by default. */
-#endif
-#include <stddef.h>
-#include <stdint.h>
+
+#include "header.h"
  
 /* Check if the compiler thinks we are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -18,24 +13,7 @@
 
 //char* buffer = ""; 
 /* Hardware text mode color constants. */
-enum vga_color {
-	COLOR_BLACK = 0,
-	COLOR_BLUE = 1,
-	COLOR_GREEN = 2,
-	COLOR_CYAN = 3,
-	COLOR_RED = 4,
-	COLOR_MAGENTA = 5,
-	COLOR_BROWN = 6,
-	COLOR_LIGHT_GREY = 7,
-	COLOR_DARK_GREY = 8,
-	COLOR_LIGHT_BLUE = 9,
-	COLOR_LIGHT_GREEN = 10,
-	COLOR_LIGHT_CYAN = 11,
-	COLOR_LIGHT_RED = 12,
-	COLOR_LIGHT_MAGENTA = 13,
-	COLOR_LIGHT_BROWN = 14,
-	COLOR_WHITE = 15,
-};
+
  
 uint8_t make_color(enum vga_color fg, enum vga_color bg) {
 	return fg | bg << 4;
@@ -174,8 +152,12 @@ char getScancode(){
 uint8_t getchar(){
 	return getScancode();
 }
+
+
 char buffer[128]="";
 uint8_t point = 0;
+
+
 void terminal_wait() {
 	char lowercase[]="##1234567890-*##qwertyuiop[]\n#asdfghjkl;'###zxcvbnm,./";
 	uint8_t n = getchar();
@@ -192,27 +174,8 @@ void terminal_wait() {
 	}
 
 	//terminal_color = make_color((n%15)+1, COLOR_BLACK);
-	uint32_t hax = 1, cracks = 1, fix = 1, vitalya = 1, ebu_dal = 1;
  	
-	for (; ebu_dal<60000; ebu_dal++)
-	for (; vitalya<30000; vitalya++)
-	for (; fix<65000; fix++)
-	for (; hax<65000; hax++)
-	for (; cracks<65000; cracks++)
-	{
-		terminal_writestring("");
-		terminal_writestring("");
-		terminal_writestring("");
-		terminal_writestring("");
-		terminal_writestring("");
-		terminal_writestring("");
-		terminal_writestring("");
-		terminal_writestring("");
-		terminal_writestring("");
-		terminal_writestring("");
-		terminal_writestring("");
-		terminal_writestring("");
-	}
+	delay();
 	
 	terminal_wait();
 
@@ -226,4 +189,10 @@ void kernel_main() {
 	
 	terminal_wait();
 }
- void update_cursor(int row, int col) {unsigned short position=(row*80) + col-1; outb(0x3D4, 0x0F); outb(0x3D5, (unsigned char)(position&0xFF));outb(0x3D4, 0x0E); outb(0x3D5, (unsigned char )((position>>8)&0xFF)); }
+ void update_cursor(int row, int col) {
+ 	unsigned short position=(row*80) + col-1;
+	outb(0x3D4, 0x0F);
+	outb(0x3D5, (unsigned char)(position&0xFF));
+	outb(0x3D4, 0x0E);
+	outb(0x3D5, (unsigned char )((position>>8)&0xFF));
+}
