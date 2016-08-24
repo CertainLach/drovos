@@ -4,7 +4,7 @@ uint8_t api_length_array(const char arr[]){
 	uint8_t i = 0;
 
 	char *myIntPtr = &arr[0];
-	while( *myIntPtr != '^' )
+	while( *myIntPtr != '\0' )
 	{
 		i++;
     	myIntPtr++;

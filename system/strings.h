@@ -1,3 +1,3 @@
-const char creturn[] = "return^"; //7
-const char cmagic[] = "magic^"; //6
-const char cclear[] = "clear^"; //6
+const char creturn[] = "return^\0"; //7
+const char cmagic[] = "magic^\0"; //6
+const char cclear[] = "clear^\0"; //6
