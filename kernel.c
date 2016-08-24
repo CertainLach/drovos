@@ -92,29 +92,7 @@ void terminal_writestring(const char* data) {
 		terminal_putchar(data[i]);
 }
 
-void system_parsecommand(char data[]) {
-	if (data[0]=='r'&&data[1]=='e'&&data[2]=='t'&&data[3]=='u'&&
-		data[4]=='r'&&data[5]=='n'&&data[6]=='^') {
-		terminal_putchar('\n');
-		return;
-	}
-	if (data[0]=='c'&&data[1]=='l'&&data[2]=='e'&&data[3]=='a'&&
-		data[4]=='r'&&data[5]=='^') {
-		terminal_initialize();
-		return;
-	}
 
-
-	if (data[0]=='m'&&data[1]=='a'&&data[2]=='g'&&data[3]=='i'&&data[4]=='c'){
-		terminal_writestring("It's a magic!\n\nYeah!\n");
-		return;
-	}
-
-	terminal_writestring("unknown command ");
-	terminal_writestring(data);
-	terminal_writestring(" \n");
-
-}
 
 #if defined(__cplusplus)
 extern "C" /* Use C linkage for kernel_main. */
@@ -173,7 +151,6 @@ void terminal_wait() {
 		buffer[point++] = c;
 	}
 
-	//terminal_color = make_color((n%15)+1, COLOR_BLACK);
  	
 	delay();
 	

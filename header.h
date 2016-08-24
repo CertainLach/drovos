@@ -21,5 +21,26 @@ enum vga_color {
 	COLOR_WHITE = 15,
 };
 
+
+
+
+bool api_comparecommand(const char mask[], char data[]);
+
 void delay();
 void terminal_writestring(const char* data);
+void system_parsecommand(char data[]);
+void terminal_putchar(char c);
+void terminal_initialize();
+
+char *api_inttostring(unsigned int value, int leading);
+
+
+// defines to memory management
+//#define ARR_LEN(a) (sizeof(a) / sizeof(a[0]))
+#define UNUSED(x) (void)(x)
+
+void init_heap(uint32_t start, uint32_t end);
+void* kmalloc(uint32_t nbytes);
+void kfree(void *ptr);
+
+uint8_t api_length_array(const char array[]);
