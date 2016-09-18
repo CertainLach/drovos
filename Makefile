@@ -1,8 +1,8 @@
-NAME:=assos.bin
+NAME:=drovos.bin
 
-all: assusdanos
+all: drovos
 
-assusdanos: boot kernel system memory api
+drovos: boot kernel system memory api
 	i686-elf-gcc -T linker.ld -o $(NAME) -ffreestanding -Og -nostdlib boot.o kernel.o system.o memory.o api.o -lgcc
 
 boot: boot.s
